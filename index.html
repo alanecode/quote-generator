@@ -8,16 +8,35 @@
 
     <div>
       <p id="quoteText"></p>
+      <p id="quoteAuthor"></p>
     </div>
-    
+
     <script type="text/javascript">
-      function setQuote() {
-      document.getElementById("quoteText").innerHTML = "TESTING AGAIN!!";
+      // function specifying how quote data is to be rendered
+      function setQuote(quoteData) {
+      document.getElementById("quoteText").innerHTML = quoteData.text;
+      document.getElementById("quoteAuthor").innerHTML = quoteData.author;
       }
 
-      window.onload = setQuote;
+      // use AJAX to retrieve external JSON
+      // https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON
+      var dataURL = "front_page.json";
+      var request = new XMLHttpRequest();
+      request.open('GET', dataURL);
+      request.responseType = "json";
+      request.send();
+
+      // setup callback called upon page load, including json data load
+      request.onload = function() {
+        var data = request.response;
+        var quotes = data.quotes;
+        // get a random quote
+        var quote = quotes[Math.floor(Math.random() * quotes.length)]
+        setQuote(quote);
+        //console.log(quote);
+      }
+
     </script>
-    
+
   </body>
 </html>
-    
